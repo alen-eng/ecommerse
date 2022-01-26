@@ -1,0 +1,51 @@
+<section>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+            <h2 class="text-center">Edit Profile</h2>
+            <form action="/profileedit" method="post" enctype="multipart/form-data">
+
+                <label for="">Phone</label>
+                <input type="text" name="phone" class="form-control" placeholder="Enter phone number" value="">
+
+                <label for="">website url</label>
+                <input type="text" name="website" class="form-control" placeholder="Enter website url" value="">
+
+                <label for="">facebook url</label>
+                <input type="text" name="facebook" class="form-control" placeholder="Enter facebook url" value="">
+
+                <label for="">Instagram url</label>
+                <input type="text" name="instagram" class="form-control" placeholder="Enter instagram url" value="">
+
+                <label for="">State</label>
+                <input type="text" name="state" class="form-control" placeholder="Enter State Name" value="">
+
+                <label for="">City</label>
+                <input type="text" name="city" class="form-control" placeholder="Enter City name" value="">
+
+                <label for="">Street</label>
+                <input type="text" name="street" class="form-control" placeholder="Enter street" value="">
+
+                <label for="">Zipcode</label>
+                <input type="text" name="zipcode" class="form-control" placeholder="Enter zipcode" value="">
+
+                 <label for="">Bio</label>
+                <input type="text" name="bio" class="form-control" placeholder="Enter Bio" value="">
+
+                 <label for="">Profile photo</label>
+                 <img src="/profile-images/{{user._id}}.jpg" alt="" style="width: 100px;height:auto; margin-bottom:15px;" id="imageView" class="pt-3">
+                <input type="file" name="Image" class="form-control" onchange="viewImage(event)">
+
+                <button type="Submit" class="btn btn-success mt-4" style="text-center; width: 70px; height:30px;" >Submit</button>
+
+            </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function viewImage(event){
+        document.getElementById('imageView').src=URL.createObjectURL(event.target.files[0])
+    }
+</script>

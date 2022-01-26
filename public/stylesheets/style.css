@@ -1,0 +1,18 @@
+@import url("https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+
+
+*{
+    margin:0;
+    padding:0;
+    outline: none;
+    text-decoration: none;
+    box-sizing: border-box;
+ 
+ }
+ .container{
+     margin-left: -10px;
+     margin-top: 5px;
+ }
+ .navbar-brand{
+     font-size: 20px;
+ }

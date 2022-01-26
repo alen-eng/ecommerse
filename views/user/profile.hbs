@@ -1,0 +1,130 @@
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link href="/stylesheets/style1.css" rel="stylesheet">
+
+</head>
+
+
+<div class="container mt-5">
+<div class="row gutters">
+<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+<div class="card h-100">
+	<div class="card-body">
+		<div class="account-settings">
+			<div class="user-profile">
+				{{#each prodetails}}
+				<div class="user-avatar">
+					<img src="/profile-images/{{this._id}}.jpg" alt="User" id="photo" height="200px;" width="200px;" style="margin-left:30px; border-radius: 50%;">
+				</div>
+				{{/each}}
+				{{#each details}}
+				<h3 class="user-name mt-3">{{this.Name}}</h3>
+				<h6 class="user-email">{{this.Email}}</h6>
+				{{/each}}
+			</div>
+			{{#each prodetails}}
+			<div class="about">
+				<h5 class="mt-3 text-primary" >About</h5>
+				<p>{{this.bio}}</p>
+			</div>
+			{{/each}}
+		</div>
+	</div>
+</div>
+</div>
+<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+<div class="card h-100">
+	<div class="card-body">
+		<div class="row gutters">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<h6 class="mb-2 text-primary">Personal Details</h6>
+			</div>
+         {{#each details}}
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group mt-2">
+					<label for="fullName">Full Name</label>
+					<input type="text" class="form-control" name="fullname" id="fullName" placeholder="Enter full name" value="{{this.Name}}" readonly>
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group mt-2">
+					<label for="eMail">Email</label>
+					<input type="email" class="form-control" name="email" id="eMail" placeholder="Enter email ID" value="{{this.Email}}" readonly>
+				</div>
+			</div>
+			{{/each}}
+			{{#each prodetails}}
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group mt-3">
+					<label for="phone">Phone</label>
+					<input type="text" class="form-control" name="phnno" id="phone" placeholder="Enter phone number" value="{{this.phone}}" readonly>
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group mt-3">
+					<label for="website">Website URL</label>
+					<input type="url" class="form-control" name="Webname" id="website" placeholder="Website url" value="{{this.website}}" readonly>
+				</div>
+			</div>
+               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group mt-3">
+					<label for="website">Facebook URL</label>
+					<input type="url" class="form-control" name="Facebook" id="fb" placeholder="Facebook url" value="{{this.facebook}}" readonly>
+				</div>
+			</div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group mt-3">
+					<label for="website">Instagram URL</label>
+					<input type="url" class="form-control" name="instagram" id="insta" placeholder="Instagram url" value="{{this.instagram}}" readonly>
+				</div>
+			</div>
+
+		 </div> 
+		 <div class="row gutters"> 
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<h6 class="mt-4 mb-3 text-primary">Address</h6>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group mt-1">
+					<label for="Street">State</label>
+					<input type="name" class="form-control" name="state" id="State" placeholder="Enter State" value="{{this.state}}" readonly>
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="ciTy">City</label>
+					<input type="name" class="form-control" name="city" id="ciTy" placeholder="Enter City" value="{{this.city}}" readonly>
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group mt-3">
+					<label for="sTate">Street</label>
+					<input type="text" class="form-control" name="Street" id="sTreet" placeholder="Enter Street" value="{{this.street}}" readonly>
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group mt-3">
+					<label for="zIp">Zip Code</label>
+					<input type="text" class="form-control" name="zipcode" id="zIp" placeholder="Zip Code" value="{{this.zipcode}}" readonly>
+				</div>
+			</div>
+		 </div>
+		 {{/each}}
+		 <div class="row gutters"> 
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<div class="text-right mt-5">
+					 <a href="/" type="button" id="submit" name="submitcancel" class="btn btn-secondary">Cancel</a> 
+					<a href="/profileedit" type="button" id="submit" name="submit" class="btn btn-primary" style="margin-left: 20px;">Update</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+</div>
+

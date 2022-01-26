@@ -1,0 +1,43 @@
+<section>
+    <div class="container">
+        <table class="table mt-5" id="productsTable">
+             <thead>
+                 <tr>
+                     <th scope="col">Name</th>
+                     <th>Address</th>
+                     <th>Product Name</th>
+                     <th>Price</th>
+                     <th>Date</th>
+                     <th>Status</th>
+                   <th>Options</th>
+                   <th>options</th>
+                 </tr>
+             </thead>
+             <tbody>
+                 {{#each allorders}}
+                 <tr>
+                     <td>{{this.user.Name}}</td>
+                     <td>{{this.address}}</td>
+                     <td>{{this.product.Name}}</td>
+                     <td>{{this.product.Price}}</td>
+                     <td>{{this.date}}</td>
+                     <td id="current-status">{{this.status}}</td>
+                     <td>
+                        <a href="" class="btn btn-primary" onclick="updateStatus('{{this._id}}', '{{this.item}}')">Ship Product</a>
+                         </td>
+                       <td>
+                        <a href="" class="btn btn-success" onclick="deliveryStatus('{{this._id}}', '{{this.item}}')">Out for delivery</a>
+                         </td>
+                 </tr>
+                 {{/each}}
+             </tbody>
+
+        </table>
+    </div>
+</section>
+
+<script>
+$(document).ready( function () {
+    $('#productsTable').DataTable();
+} );
+</script>
