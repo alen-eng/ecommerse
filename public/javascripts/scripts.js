@@ -8,7 +8,7 @@ function addtoCart(proId){
        count=parseInt(count)+1
        $("#cart-count").html(count)
           }
-       
+          location.reload()
       }
     })
   }

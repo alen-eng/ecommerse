@@ -89,6 +89,12 @@ router.post('/admin-login', (req,res)=>{
      }
     })
   })
+  router.get('/admin-logout',(req,res)=>{
+    req.session.admin=null
+    req.session.adminLoggedIn=false
+    res.redirect('/')
+  })
+
 router.get('/all-users',verifyLogin,async(req,res)=>{
   users= await productHelpers.getUserDetails()
   res.render('admin/all-users',{admin:true,users})

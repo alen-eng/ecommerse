@@ -189,7 +189,6 @@ module.exports={
          })
         },
         getTotalAmount:(userId)=>{
-         
             return new Promise(async(resolve,reject)=>{
                 let total=await db.get().collection(collection.CART_COLLECTION).aggregate([
                     {
@@ -473,6 +472,67 @@ fetchprodetails:(userId)=>{
                 resolve(response)
             })
              })
+        },
+
+        userDetailsValidate:(email)=>{
+            return new Promise(async(resolve,reject)=>{
+                let currentProfile= await  db.get().collection(collection.USER_COLLECTION).findOne({Email:email})
+                if (currentProfile){
+                let details= await db.get().collection(collection.USER_COLLECTION).aggregate([
+                    {
+                        $match:{Email:email}
+                    },
+                    {
+                        $project:{
+                                _id:1,
+                                Email:1,
+                                Password:1,
+                        }
+                    }
+                ]).toArray()
+                resolve(details)
+            }
+            else{
+                resolve()
+            }
+            })
+        },
+        useridValidate:(userId)=>{
+            return new Promise(async(resolve,reject)=>{
+              let idvalid=await db.get().collection(collection.USER_COLLECTION).findOne({_id:ObjectID(userId)})
+              if(idvalid){
+                let details= await db.get().collection(collection.USER_COLLECTION).aggregate([
+                    {
+                        $match:{_id:ObjectID(userId)}
+                    },
+                    {
+                        $project:{
+                                Email:1,
+                                Password:1
+                        }
+                    }
+                ]).toArray()
+                resolve(details)
+              }
+              else{
+                  resolve()
+              }
+            })
+        },
+        changePassword:(userId,newPassword)=>{
+            return new Promise(async(resolve, reject)=>{
+                nwPassword=await bcrypt.hash(newPassword,10)
+                db.get().collection(collection.USER_COLLECTION).updateOne({_id:ObjectID(userId)},
+                {
+                    $set:{
+                        Password:nwPassword,
+                        Password1:nwPassword
+                    }
+                }
+                ).then((resolve)=>{
+                    resolve({status:true})
+                })
+            })
         }
 }
 

@@ -1,0 +1,20 @@
+<script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+<div class="row">
+    <div class="col-md-6 m-auto">
+    <div class="container mt-5 pl-5">
+        <h2 class="text-center">Forgot Password</h2>
+        <form action="/forgot" method="post">
+         {{#if emailerr}}
+        <p class="error">User not registered</p>
+        {{/if}}
+             <div class="form-group mt-3">
+                <label> User Email</label>
+                <input type="email" class="form-control" name="Email" placeholder="Enter Email" required>
+                </div>
+       <button type="submit" class="btn btn-primary mt-5">Submit</button>
+        </form>
+    </div>
+    </div>
+</div>
+

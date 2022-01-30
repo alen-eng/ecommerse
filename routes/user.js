@@ -1,6 +1,8 @@
 var express = require('express');
+var nodemailer = require('nodemailer');
  var fs = require('fs');
  var path=require('path');
+ const jwt=require('jsonwebtoken');
 // var fs=require('fs-extra');
 const res = require('express/lib/response');
 const async = require('hbs/lib/async');
@@ -10,6 +12,8 @@ var router = express.Router();
 
 const productHelpers = require('../helpers/product-helpers');
 const userHelpers = require('../helpers/user-helpers');
+const { Console } = require('console');
+const { Db } = require('mongodb');
 
 const verifyLogin=(req,res,next)=>{
   if(req.session.userLoggedIn){
@@ -59,19 +63,102 @@ router.post('/signup',(req,res)=>{
       console.log('source.txt was copied to destination.txt');
     }
      fs.copyFile('./public/images/image.jpg','./public/profile-images/'+response._id+'.jpg',callback);
-     //fs.move('./public/images/image.jpg','./public/profile-images/'+response._id+'.jpg')
-    // fs.readFile('./public/images/image.jpg', function read(err, data) {
-    //   if (err) {
-    //       throw err;
-    //   }
-    //   let image = data;
-    //   image.data('./public/profile-images/'+response._id+'.jpg')
-    //   // console.log(content);
-    // })
     console.log(response);
     req.session.user=response
     req.session.userLoggedIn=true
     res.redirect('/')
+  })
+})
+
+router.get('/forgot',(req,res)=>{
+  res.render('user/forgot')
+})
+router.post('/forgot',(req,res)=>{
+  const JWT_SECRETE='5fsr6eg';
+  const email=req.body.Email;
+  userHelpers.userDetailsValidate(email).then((details)=>{
+   if(details){
+     const secret= JWT_SECRETE + details[0].Password;
+     const payload={
+       email:details[0].Email,
+       id:details[0]._id,
+     }
+     const token=jwt.sign(payload,secret,{expiresIn:'15m'})
+     const link=`http://localhost:3000/reset-password/${details[0]._id}/${token}`;
+    //  console.log(link);
+    var transporter = nodemailer.createTransport({
+      host:'smtp.gmail.com',
+      port:587,
+      secure:true,
+      service: 'gmail',
+      auth: {
+        user:'shoppingcarta7@gmail.com',
+        pass:'elchapo"75378";'
+      }
+    });
+    
+    var mailOptions = {
+      from:'shoppingcarta7@gmail.com' ,
+      to:details[0].Email,
+      subject: '  Password Reset Link ',
+      text: 'Your password Reset link is : '+link
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+     res.send('<h1> Password reset link has been send to your Email. Please check (including spam ).</h1>');
+   }
+   else{
+    res.render('user/forgot',{emailerr:req.session.emailerr})
+   }
+  })
+})
+router.get('/reset-password/:id/:token',(req,res)=>{
+  const {id,token}=req.params;
+  userHelpers.useridValidate(id).then((details)=>{
+    if(details){
+      const JWT_SECRETE='5fsr6eg';
+      const secret= JWT_SECRETE + details[0].Password;
+      try{
+          const payload=jwt.verify(token,secret);
+          res.render('user/reset-password',{Email:details[0].Email})
+          }
+      catch(error){
+                    console.log(error.message);
+                   }
+      }
+      else{
+        res.send('Invalid UserId');
+        return
+      }
+  })
+})
+
+router.post('/reset-password/:id/:token',(req,res)=>{
+  const {id,token}=req.params;
+  const {email,Password,Password1}=req.body;
+  userHelpers.useridValidate(id).then((details)=>{
+    if(details){
+      const JWT_SECRETE='5fsr6eg';
+      const secret= JWT_SECRETE + details[0].Password;
+      try{
+          const payload=jwt.verify(token,secret);
+          userHelpers.changePassword(id,Password).then(response)
+           res.render('user/login')
+          }
+      catch(error){
+                    console.log(error.message);
+                   }
+      }
+      else{
+        res.send('Invalid UserId');
+        return
+      }
   })
 })
 
@@ -99,7 +186,7 @@ if(products.length>0){
   totalValue=await userHelpers.getTotalAmount(req.session.user._id)
 }
 console.log(req.session.user);
-  res.render('user/cart',{products,user:req.session.user._id,user:req.session.user,totalValue})
+  res.render('user/cart',{products,user1:req.session.user._id,user:req.session.user,totalValue})
 })
 router.get('/add-to-cart/:id',(req,res)=>{
   console.log("Api call");
@@ -111,7 +198,7 @@ router.get('/add-to-cart/:id',(req,res)=>{
 
 router.post('/change-product-quantity',(req,res,next)=>{
 userHelpers.changeProductQuantity(req.body).then(async(response)=>{
-  console.log(response);
+  // console.log(response);
   response.totalAmount=await userHelpers.getTotalAmount(req.body.user)
   res.json(response)
 
