@@ -55,8 +55,59 @@ router.get('/login',(req,res)=>{
 router.get('/signup',(req,res)=>{
   res.render('user/signup')
 })
+
 router.post('/signup',(req,res)=>{
-  console.log(req.body);
+  const JWT_SECRETE='5fbtg5eg';
+  const email=req.body.Email;
+     const secret= JWT_SECRETE + email;
+     const payload={
+       email:email
+     }
+     const token=jwt.sign(payload,secret,{expiresIn:'15m'})
+     const link=`https://shoppingcart-a.herokuapp.com/signup/${email}/${token}`;
+     var transporter = nodemailer.createTransport({
+      host:'smtp.gmail.com',
+      port:587,
+      secure:true,
+      service: 'gmail',
+      auth: {
+        user:'shoppingcarta7@gmail.com',
+        pass:'elchapo"75378";'
+      }
+    });
+    
+    var mailOptions = {
+      from:'shoppingcarta7@gmail.com' ,
+      to:email,
+      subject: ' Email verification Link ',
+      text: 'Your Email verification link is : '+link
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+
+   res.send('<h1> Email verification link has been send to your Email. Please check (including spam ).</h1>');
+   router.get('/signup/:email/:token',(req,res)=>{
+    const {email,token}=req.params;
+    const JWT_SECRETE='5fbtg5eg';
+    const secret= JWT_SECRETE + email;
+    try{
+        const payload=jwt.verify(token,secret);
+        res.render('user/login');
+        }
+    catch(error){
+                  console.log(error.message);
+                 }
+    
+   })
+
+
+
    userHelpers.doSignup(req.body).then((response)=>{
     function callback(err) {
       if (err) throw err;
@@ -68,6 +119,7 @@ router.post('/signup',(req,res)=>{
     req.session.userLoggedIn=true
     res.redirect('/')
   })
+
 })
 
 router.get('/forgot',(req,res)=>{
