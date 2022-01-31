@@ -84,7 +84,7 @@ router.post('/forgot',(req,res)=>{
        id:details[0]._id,
      }
      const token=jwt.sign(payload,secret,{expiresIn:'15m'})
-     const link=`http://localhost:3000/reset-password/${details[0]._id}/${token}`;
+     const link=`https://shoppingcart-a.herokuapp.com/reset-password/${details[0]._id}/${token}`;
     //  console.log(link);
     var transporter = nodemailer.createTransport({
       host:'smtp.gmail.com',
