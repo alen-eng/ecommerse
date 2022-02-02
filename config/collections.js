@@ -7,4 +7,5 @@ module.exports={
     ORDER_COLLECTION:'order',
     ADMIN_COLLECTION:'admin',
     PROFILE_COLLECTION:'profile',
+    WISHLIST_COLLECTION:'wishlist',
 }

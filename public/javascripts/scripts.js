@@ -40,3 +40,14 @@ function deliveryStatus(ordId,proId){
        }
   })
 }
+
+function wishlist(proId){
+  $.ajax({
+    url:'/add-to-wishlist/'+proId,
+    method:'post',
+    success:(response)=>{
+      console.log(response);
+      alert("Product has been added to wishlist")
+    }
+  })
+}

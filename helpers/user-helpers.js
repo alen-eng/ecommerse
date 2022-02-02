@@ -220,17 +220,7 @@ module.exports={
     
                        }
                     },
-                        //    {
-                        //     input: "$product.Price",
-                        //     to: "int",
-                        //     onError: "HELLO GUYS",  // Optional.
-                        //     onNull: ""    // Optional.
-                        //  },
-                    //  },
-                    //     {
-                    //         quantity: parseInt('$quantity'),
-                    //         price: parseInt('$product.Price')
-                    //     }
+                      
                      
                     
                     {
@@ -532,6 +522,32 @@ fetchprodetails:(userId)=>{
                 ).then((resolve)=>{
                     resolve({status:true})
                 })
+            })
+        },
+        addToWishlist:(proId,userId)=>{
+            let proObj={
+                item:ObjectID(proId),
+            }
+            return new Promise(async(resolve,reject)=>{
+                let userWishlist=await db.get().collection(collection.WISHLIST_COLLECTION).findOne({user:ObjectID(userId)})
+                if(userWishlist){
+                     
+                    db.get().collection(collection.WISHLIST_COLLECTION).updateOne({user:ObjectID(userId)},
+                    {
+                          $push:{products:proObj}
+                     }
+                   ).then((response)=>{
+                        resolve()
+                   })
+                 }else{
+                    let wishlistObj={
+                        user:ObjectID(userId),
+                        products:[proObj]
+                    }
+                    db.get().collection(collection.WISHLIST_COLLECTION).insertOne(wishlistObj).then((response)=>{
+                        resolve()
+                    })
+                }
             })
         }
 }

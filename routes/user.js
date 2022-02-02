@@ -324,4 +324,9 @@ router.post('/profileedit',verifyLogin,(req,res)=>{
   // res.redirect('/profile')
 })
 })
+router.post('/add-to-wishlist/:id',verifyLogin,(req,res)=>{
+  userHelpers.addToWishlist(req.params.id,req.session.user._id).then(()=>{
+    res.json({status:true})
+  })
+})
 module.exports = router;
