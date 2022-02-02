@@ -57,6 +57,12 @@ router.get('/signup',(req,res)=>{
 })
 
 router.post('/signup',(req,res)=>{
+  userHelpers.userDetailsValidate(req.body.Email).then((response)=>{
+    if(response){
+      res.render('user/signup',{response})
+   }
+  
+  else{
   const JWT_SECRETE='5fbtg5eg';
   const email=req.body.Email;
      const secret= JWT_SECRETE + email;
@@ -115,7 +121,8 @@ router.post('/signup',(req,res)=>{
     req.session.userLoggedIn=true
    // res.redirect('/')
   })
-
+}
+  })
 })
 
 router.get('/forgot',(req,res)=>{
