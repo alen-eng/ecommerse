@@ -106,11 +106,8 @@ router.post('/signup',(req,res)=>{
     
    })
    userHelpers.doSignup(req.body).then((response)=>{
-    function callback(err){
-     if(err)
-     throw err
-     console.log(err);
-     return;
+    function callback(){
+     console.log("Hello");
     }
      fs.copyFile('./public/images/image.jpg','./public/profile-images/'+response._id+'.jpg',callback);
     console.log(response);
