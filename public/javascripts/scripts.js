@@ -51,3 +51,15 @@ function wishlist(proId){
     }
   })
 }
+
+function remove(proId){
+  $.ajax({
+    url:'/remove-from-wishlist/'+proId,
+    method:'post',
+    success:(response)=>{
+      console.log(response);
+      alert("Product has been Removed from wishlist")
+      location.reload()
+    }
+  })
+}

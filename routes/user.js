@@ -329,4 +329,13 @@ router.post('/add-to-wishlist/:id',verifyLogin,(req,res)=>{
     res.json({status:true})
   })
 })
+router.get('/wishlist',verifyLogin,async(req,res)=>{
+  let products= await userHelpers.getwishlistProducts(req.session.user._id)
+    res.render('user/wishlist',{products,user1:req.session.user._id,user:req.session.user})
+  })
+  router.post('/remove-from-wishlist/:id',verifyLogin,(req,res)=>{
+    userHelpers.removeFromWishlist(req.params.id,req.session.user._id).then(()=>{
+      res.json({status:true})
+    })
+  })
 module.exports = router;

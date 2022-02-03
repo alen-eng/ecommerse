@@ -330,20 +330,6 @@ module.exports={
 
 
 
-                // var options={
-                //     amount: total,
-                //     currency: "INR",
-                //     receipt: ""+orderId
-                // };
-                // instance.orders.create(options, function(err,order){
-                //     if(err){
-                //         console.log(err);
-                //     }
-                //     else{
-                // console.log("new order", order);
-                // resolve(order)
-                //     }
-                // });  
             })
         },
         verifyPayment:(details)=>{
@@ -549,6 +535,47 @@ fetchprodetails:(userId)=>{
                     })
                 }
             })
+        },
+        getwishlistProducts:(userId)=>{
+            return new Promise(async(resolve,reject)=>{
+                let wishlist=await db.get().collection(collection.WISHLIST_COLLECTION).aggregate([
+                    {
+                       $match:{user:ObjectID(userId)}
+                    },
+                    {
+                      $unwind:'$products'
+                    },
+                    {
+                      $project:{
+                          item:'$products.item',
+                      }
+                    },
+                    {
+                       $lookup:{
+                           from:collection.PRODUCT_COLLECTION,
+                           localField:'item',
+                           foreignField:'_id',
+                           as:'product'
+                       }
+                    },
+                    {
+                        $project:{
+                            item:1,
+                            product:{$arrayElemAt:['$product',0]}
+                        }
+                    }
+                ]).toArray()
+                resolve(wishlist)
+            })
+        },
+        removeFromWishlist:(proId,userId)=>{
+          return new Promise((resolve,reject)=>{
+            db.get().collection(collection.WISHLIST_COLLECTION).update(
+                { user: ObjectID(userId) },
+                { $pull: { 'products': { item: ObjectID(proId) } } }
+              );
+                resolve()
+          })
         }
 }
 
