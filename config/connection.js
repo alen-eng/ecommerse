@@ -4,7 +4,7 @@ const state ={
 }
 module.exports.connect=function(done){
     //const Password=process.env.tvZwiltv8ylWVSkA
-   const url= 'mongodb+srv://USER:PASSWORD.mongodb.net/CLUSTER';
+   const url= process.env.MONGO_URL;
     //const url='mongodb://localhost:27017'
     const dbname='shopping'
 
