@@ -30,14 +30,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload())
 
-
+app.use(session({secret:"key",cookie:{maxAge:600000}}))
 db.connect((err)=>{
   if(err)
     console.log('Database not connected!!'+err);
   else
   console.log('Database connected successfully!!');
 })
-app.use(session({secret:"key",cookie:{maxAge:600000}}))
+
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
 
